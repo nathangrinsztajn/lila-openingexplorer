@@ -103,6 +103,11 @@ impl Database {
         Ok(Database { inner })
     }
 
+    pub fn compact(&self) {
+        self.lichess().compact();
+        self.masters().compact();
+    }
+
     pub fn masters(&self) -> MastersDatabase<'_> {
         MastersDatabase {
             inner: &self.inner,
@@ -139,6 +144,11 @@ pub struct MastersDatabase<'a> {
 }
 
 impl MastersDatabase<'_> {
+    pub fn compact(&self) {
+        compact_column(self.inner, self.cf_masters);
+        compact_column(self.inner, self.cf_masters_game);
+    }
+
     pub fn has_game(&self, id: GameId) -> Result<bool, rocksdb::Error> {
         self.inner
             .get_pinned_cf(self.cf_masters_game, id.to_bytes())
@@ -248,6 +258,13 @@ pub struct LichessDatabase<'a> {
 }
 
 impl LichessDatabase<'_> {
+    pub fn compact(&self) {
+        compact_column(self.inner, self.cf_lichess);
+        compact_column(self.inner, self.cf_lichess_game);
+        compact_column(self.inner, self.cf_player);
+        compact_column(self.inner, self.cf_player_status);
+    }
+
     pub fn game(&self, id: GameId) -> Result<Option<LichessGame>, rocksdb::Error> {
         Ok(self
             .inner
@@ -489,4 +506,8 @@ fn void_merge(
     _operands: &mut MergeOperands,
 ) -> Option<Vec<u8>> {
     unreachable!("void merge")
+}
+
+fn compact_column(db: &DB, cf: &ColumnFamily) {
+    db.compact_range_cf(cf, None::<&[u8]>, None::<&[u8]>);
 }
