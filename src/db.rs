@@ -37,9 +37,10 @@ fn column_family(
     block_opts.set_index_type(BlockBasedIndexType::HashSearch);
     block_opts.set_block_size(block_size);
     if bloom_filter > 0 {
-        block_opts.set_bloom_filter(bloom_filter, true);
+        block_opts.set_bloom_filter(bloom_filter, false);
     }
     opts.set_block_based_table_factory(&block_opts);
+    opts.set_optimize_filters_for_hits(true);
     ColumnFamilyDescriptor::new(name, opts)
 }
 
@@ -62,7 +63,7 @@ impl Database {
                     masters_merge,
                     Some(KeyPrefix::SIZE),
                     8 * 1024,
-                    3,
+                    4,
                     &cache,
                 ),
                 column_family("masters_game", None, void_merge, None, 4 * 1024, 0, &cache),
