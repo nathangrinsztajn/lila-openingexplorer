@@ -23,7 +23,7 @@ use crate::{
     util::ByColorDef,
 };
 
-const MAX_PLIES: usize = 50;
+const MAX_PLIES: usize = 40;
 
 #[derive(Clone)]
 pub struct MastersImporter {
@@ -142,6 +142,15 @@ impl LichessImporter {
             .map_or(false, |info| info.indexed_lichess)
         {
             log::debug!("lichess game {} already imported", game.id);
+            return Ok(());
+        }
+
+        if game.speed == Speed::Bullet {
+            // log::debug!("lichess game is a fucking bullet");
+            return Ok(());
+        }
+
+        if game.speed == Speed::UltraBullet {
             return Ok(());
         }
 

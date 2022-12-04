@@ -61,7 +61,13 @@ impl RatingGroup {
     }
 
     fn select(mover_rating: u16, opponent_rating: u16) -> RatingGroup {
-        RatingGroup::select_avg(mover_rating / 2 + opponent_rating / 2)
+        if (mover_rating - opponent_rating > 150) || (opponent_rating - mover_rating > 150) {
+            RatingGroup::GroupLow
+        }
+        else {
+            RatingGroup::select_avg(mover_rating / 2 + opponent_rating / 2)
+        }
+        
     }
 }
 

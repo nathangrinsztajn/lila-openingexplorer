@@ -49,7 +49,7 @@ static GLOBAL: Jemalloc = Jemalloc;
 struct Opt {
     /// Binding address. Note that administrative endpoints must be protected
     /// using a reverse proxy.
-    #[clap(long, default_value = "127.0.0.1:9002")]
+    #[clap(long, default_value = "127.0.0.1:9004")]
     bind: SocketAddr,
     /// Path to RocksDB database
     #[clap(long, default_value = "_db")]
