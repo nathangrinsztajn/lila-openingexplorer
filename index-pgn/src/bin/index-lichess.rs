@@ -217,6 +217,8 @@ impl Visitor for Importer {
             self.current.white.rating.unwrap_or(0),
             self.current.black.rating.unwrap_or(0),
         ) >= 1501
+            && (self.current.white.rating.unwrap_or(0) - self.current.black.rating.unwrap_or(0)) < 150
+            && (self.current.white.rating.unwrap_or(0) - self.current.black.rating.unwrap_or(0)) < 150
             && self
                 .current
                 .id
@@ -257,7 +259,7 @@ fn java_hash_code(s: &str) -> i32 {
 
 #[derive(Parser)]
 struct Args {
-    #[clap(long, default_value = "http://localhost:9002")]
+    #[clap(long, default_value = "http://localhost:9004")]
     endpoint: String,
     #[clap(long, default_value = "200")]
     batch_size: usize,
