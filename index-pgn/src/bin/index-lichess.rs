@@ -1,7 +1,6 @@
 use std::{
-    cmp::min, ffi::OsStr, fs::File, io, mem, num::Wrapping, path::PathBuf, thread, time::Duration,
+    cmp::min, ffi::OsStr, fs::File, io, mem, num::Wrapping, path::PathBuf, thread, time::Duration, num::abs_diff,
 };
-use num::abs_diff;
 use clap::Parser;
 use pgn_reader::{BufferedReader, Color, Outcome, RawHeader, SanPlus, Skip, Visitor};
 use serde::Serialize;
