@@ -1,5 +1,5 @@
 use std::{
-    cmp::min, ffi::OsStr, fs::File, io, mem, num::Wrapping, path::PathBuf, thread, time::Duration, num::abs_diff,
+    cmp::min, ffi::OsStr, fs::File, io, mem, num::Wrapping, path::PathBuf, thread, time::Duration, cmp::max,
 };
 use clap::Parser;
 use pgn_reader::{BufferedReader, Color, Outcome, RawHeader, SanPlus, Skip, Visitor};
@@ -216,7 +216,7 @@ impl Visitor for Importer {
             self.current.white.rating.unwrap_or(0),
             self.current.black.rating.unwrap_or(0),
         ) >= 1501
-            && abs_diff(self.current.white.rating.unwrap_or(0), self.current.black.rating.unwrap_or(0)) < 150
+            && max(self.current.white.rating.unwrap_or(0), self.current.black.rating.unwrap_or(0)) - min(self.current.white.rating.unwrap_or(0), self.current.black.rating.unwrap_or(0)) < 150
             && self
                 .current
                 .id
