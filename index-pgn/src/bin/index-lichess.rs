@@ -1,7 +1,7 @@
 use std::{
     cmp::min, ffi::OsStr, fs::File, io, mem, num::Wrapping, path::PathBuf, thread, time::Duration,
 };
-
+use num::abs_diff;
 use clap::Parser;
 use pgn_reader::{BufferedReader, Color, Outcome, RawHeader, SanPlus, Skip, Visitor};
 use serde::Serialize;
@@ -217,8 +217,7 @@ impl Visitor for Importer {
             self.current.white.rating.unwrap_or(0),
             self.current.black.rating.unwrap_or(0),
         ) >= 1501
-            && (self.current.white.rating.unwrap_or(0) - self.current.black.rating.unwrap_or(0)) < 150
-            && (self.current.white.rating.unwrap_or(0) - self.current.black.rating.unwrap_or(0)) < 150
+            && abs_diff(self.current.white.rating.unwrap_or(0), self.current.black.rating.unwrap_or(0)) < 150
             && self
                 .current
                 .id
