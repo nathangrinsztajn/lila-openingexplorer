@@ -61,7 +61,7 @@ impl RatingGroup {
     }
 
     fn select(mover_rating: u16, opponent_rating: u16) -> RatingGroup {
-        if max(mover_rating, opponent_rating) - min(mover_rating, opponent_rating) >= 150) {
+        if (max(mover_rating, opponent_rating) - min(mover_rating, opponent_rating) >= 150) {
             RatingGroup::Group3200
         }
         else {
